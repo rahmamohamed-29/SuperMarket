@@ -1,0 +1,76 @@
+﻿@model SmartMart.ViewModel.DetailsCustomer
+<section>
+    <div class="container">
+        <h3 class="text-black">Customer Details</h3>
+        <div class="row mb-5 p-5" style="box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
+             <div class="col-4">
+                <img src="@Model.Customer.ImagePath" alt="Customer Image" class="img-fluid rounded-circle" />
+             </div>
+             <div class="col-5 pt-3">
+                <h4 class="text-black fw-bold fs-2">@Model.Customer.Name</h4>
+                <p><i class="bi bi-envelope"></i> @Model.Customer.Email</p>
+                <p><i class="bi bi-telephone"></i> @Model.Customer.Phone</p>
+                <p><i class="bi bi-geo-alt"></i> @Model.Customer.City</p>
+                <p><i class="bi bi-house-door"></i> @Model.Customer.Address</p>
+                <div class="my-4">
+                    <a asp-controller="Customers" asp-action="Edit" asp-route-id="@Model.Customer.Id" class="btn btn-sm btn-outline-primary rounded-3 fw-bold fs-6 p-2" title="Edit"><i class="bi bi-pen"> Edit</i></a>
+                </div>
+            </div>
+                <div class="d-flex my-4 col-3 my-auto">
+                   <div class="d-flex align-items-center gap-3 px-4 py-3 rounded-4 shadow-sm" style="background-color:#E4F3EF; width:fit-content;height:fit-content;">
+                      <div class="d-flex align-items-center justify-content-center"> <i class="bi bi-handbag text-primary fs-1 fw-bold"></i></div>
+                      <div>
+                          <p class="text-primary fw-semibold mb-1">Number of Orders</p>
+                          <p class="text-primary fw-bold fs-2 mb-0"> @Model.Customer.Orders.Count </p>
+                      </div>
+
+                   </div>
+                </div>
+               
+            
+        </div>
+         <h3 class="text-black"> Order History</h3>
+
+        <div class="row g-4 py-5">
+
+            @foreach (var order in Model.Customer.Orders)
+            {
+                <div class="col-lg-4 col-md-6 col-sm-12">
+
+                    <div class="p-4 rounded-4 h-100" style="box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 15px;">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h5 class="text-primary fw-bold rounded-3 px-3 py-2 mb-0" style="background-color:#E4F3EF;"> # @order.Id</h5>
+                            <p class="text-dark shadow-sm py-2 px-3 rounded-3"> @order.Status</p>
+                        </div>
+                        <div class="px-3">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="bi bi-calendar3 text-primary me-3 fs-5"></i>
+                                <div>
+                                    <small class="text-muted d-block">Order Date</small>
+                                    <span class="fw-semibold"> @order.OrderDate.ToString("dd/MM/yyyy")</span>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="bi bi-currency-exchange text-primary me-3 fs-5"></i>
+                                <div>
+                                    <small class="text-muted d-block">Total Price</small>
+                                    <span class="fw-bold text-primary"> @order.TotalPrice EGP </span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="d-flex my-3">
+                            <a asp-controller="Orders" asp-action="Details" asp-route-id="@order.Id" class="btn btn-sm btn-outline-primary rounded-3 fw-bold fs-6 me-2" title="Details"><i class="bi bi-eye"></i> Details</a>
+                            <a asp-controller="Orders" asp-action="Edit" asp-route-id="@order.Id" class="btn btn-sm btn-outline-info rounded-3 fw-bold fs-6 me-2" title="Edit"><i class="bi bi-pen"></i> Edit</a>
+                            <a asp-controller="Orders" asp-action="Delete" asp-route-id="@order.Id" class="btn btn-sm btn-outline-secondary rounded-3 fw-bold fs-6" title="Delete"><i class="bi bi-trash"></i> Delete</a>
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+</section>

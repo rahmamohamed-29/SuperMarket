@@ -1,0 +1,227 @@
+﻿@model SmartMart.ViewModel.DetailsOrder
+
+<section class="pb-5">
+    <div class="container">
+        <div class="text-center">
+            <h1 class="text-black fw-bold fs-1 mt-5">Edit Order</h1>
+            <p>Update the details of your order.</p>
+        </div>
+        <div class="w-75 mx-auto p-5 " style="box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
+
+            <form asp-controller="Orders" asp-action="EditCurrent" method="post">
+                <input type="hidden" asp-for="order.Id" />
+                <input type="hidden" asp-for="order.CustomerId" />
+
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <h4 class="text-black fw-bold fs-2 mb-4"> <i class="bi bi-plus-circle-fill text-primary fw-bold"></i>  Order Information</h4>
+                <div class="form-group mb-3">
+                    <label class="form-label text-black fs-4" asp-for="order.OrderDate"></label>
+                    <input type="datetime-local" asp-for="order.OrderDate" class="form-control p-3 text-black fs-5" value="@Model.order.OrderDate.ToString("yyyy-MM-ddTHH:mm")" />
+                    <span asp-validation-for="order.OrderDate" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <select class="form-control p-3 text-black fs-5" asp-for="order.Status">
+                        <option value="" hidden class="text-black-50">Select status</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                    <span asp-validation-for="order.Status" class="text-danger"></span>
+                </div>
+
+               
+                <div id="productContainer">
+
+                       
+              @for (int i = 0; i < Model.OrderItems.Count; i++)
+               {
+                  
+                    <div class="productFields">
+                            <input type="hidden" asp-for="OrderItems[i].Id" />
+                            <input type="hidden" asp-for="OrderItems[i].OrderId" />
+                        <div class="form-group mb-3">
+                            <label class="form-label text-black fs-4">Category </label>
+                            <select class="form-control p-3 text-black fs-4 categorySelect">
+                                <option value="" hidden class="text-black-50">Select a category</option>
+                                @foreach (var category in ViewBag.Categories)
+                                {
+                                    <option value="@category.Id">@category.Name</option>
+                                }
+                            </select>
+                        </div>
+                             <div class="row">
+
+                                    <div class="form-group mb-3 col-6">
+                                        <label class="form-label text-black fs-4 ">Product </label>
+
+                                        <select class="form-control p-3 text-black fs-4 productSelect" asp-for="OrderItems[i].ProductId">
+                                            <option value="" hidden class="text-black-50">Select a product</option>
+                                            @foreach (var product in ViewBag.Products)
+                                            {
+                                                <option value="@product.Id" data-category="@product.CategoryId" data-price="@product.Price">
+                                                    @product.Name
+                                                </option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="form-group mb-3 col-6">
+                                        <label class="form-label text-black fs-4 ">Quantity</label>
+                                        <input type="number" class="form-control p-3 text-black fs-5 quantityInput" asp-for="OrderItems[i].Quantity" min="1" value="1" />
+                                    </div>
+                              </div>
+                              <div class="form-group mb-3 disprice d-none">
+                                        <label class="form-label text-black fs-4">Price</label>
+                                        <p class="form-control p-3 text-black fs-5 PriceItem">0.00 EGP</p>
+                                        <input type="hidden" class="price" asp-for="OrderItems[i].Price" />
+                              </div>
+                              </div>
+                             
+                                                   
+                          }
+                </div>
+                                <div>
+                    <button type="button" class="btn btn-secondary fw-bold fs-5 px-3 py-2 my-3" id="addProductBtn"><i class="bi bi-basket-fill"></i> Add another product</button>
+                </div>
+                <div class="form-group mb-3 disTotal d-none">
+                    <label class="form-label text-black fs-4" asp-for="order.TotalPrice"></label>
+                    <p class="form-control p-3 text-black fs-5 TotalPrice"></p>
+                    <input type="hidden" class="prices" asp-for="order.TotalPrice" />
+                </div>
+                <button type="submit" class="btn btn-primary fw-bold fs-5 px-3">Edit</button>
+                <a asp-controller="Customers" asp-action="Details" asp-route-id="@Model.order.CustomerId" class="btn btn-secondary fw-bold fs-5 px-3">Cancel</a>
+            </form>
+
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+
+        let productField = document.querySelectorAll('.productFields');
+
+        productField.forEach(function(productField) {
+            Fillter(productField);
+            calculatePrice(productField);
+            setCategory(productField);
+        });
+        function setCategory(productField) {
+            let categorySelect = productField.querySelector('.categorySelect');
+            let productSelect = productField.querySelector('.productSelect');
+            let selectedOption = productSelect.options[productSelect.selectedIndex];
+            if (selectedOption && selectedOption.dataset.category) {
+                categorySelect.value = selectedOption.dataset.category;
+            }
+        }
+
+        function Fillter(productField) {
+
+            let categorySelect = productField.querySelector('.categorySelect');
+            let productSelect = productField.querySelector('.productSelect');
+            categorySelect.addEventListener('change', function() {
+                let selectedCategory = categorySelect.value;
+                let products = productSelect.querySelectorAll("option");
+                products.forEach(function(product) {
+                    if (product.value === "") {
+                        return;
+                    }
+                    if (product.dataset.category === selectedCategory) {
+                        product.hidden = false;
+                    }
+                    else {
+                        product.hidden = true;
+                    }
+                });
+
+                productSelect.value = "";
+            });
+        }
+
+        function calculatePrice(productField) {
+            let selectedProduct = productField.querySelector('.productSelect');
+            let quantityInput = productField.querySelector('.quantityInput');
+            let displayPrice = productField.querySelector('.disprice');
+            let priceDisplay = productField.querySelector('.PriceItem');
+            let priceInput = productField.querySelector('.price');
+            function updatePrice() {
+                let selectedOption = selectedProduct.options[selectedProduct.selectedIndex];
+                if (selectedOption && selectedOption.dataset.price && quantityInput.value) {
+                    let priceOne = parseFloat(selectedOption.dataset.price);
+                    let quantityValue = parseInt(quantityInput.value);
+                    let totalPrice = priceOne * quantityValue;
+                    priceDisplay.textContent = totalPrice.toFixed(2) + " EGP";
+                    priceInput.value = totalPrice.toFixed(2);
+                    displayPrice.classList.remove('d-none');
+                } else {
+                    priceDisplay.textContent = "0.00 EGP";
+                    priceInput.value = "0.00";
+                    displayPrice.classList.add('d-none');
+                }
+                calculateTotalPrice();
+            }
+            selectedProduct.addEventListener('change', updatePrice);
+            quantityInput.addEventListener('input', updatePrice);
+            updatePrice();
+        }
+
+        let addBtn = document.getElementById('addProductBtn');
+        let productContainer = document.getElementById('productContainer');
+        addBtn.addEventListener('click', function() {
+            let productField = document.querySelectorAll('.productFields');
+            let lastProduct = productField[productField.length - 1];
+            let selectedProduct = lastProduct.querySelector('.productSelect').value;
+            let quantity = lastProduct.querySelector('.quantityInput').value;
+            if (!selectedProduct || !quantity) {
+                alert("Please select a product and enter a quantity.");
+                return;
+            }
+            let newProductGroup = lastProduct.cloneNode(true);
+            let itemId = newProductGroup.querySelector('[name$=".Id"]');
+            if(itemId){
+                itemId.value = "";
+            }
+            let orderId = newProductGroup.querySelector('[name$=".OrderId"]')
+            if(orderId){
+                orderId.value =""
+            }
+
+            newProductGroup.querySelector('.categorySelect').value = "";
+            newProductGroup.querySelector('.productSelect').value = "";
+            newProductGroup.querySelector('.price').value = "";
+            newProductGroup.querySelector('.PriceItem').textContent = "";
+            newProductGroup.querySelector('.quantityInput').value = 1;
+
+            let index = document.querySelectorAll('.productFields').length;
+            newProductGroup.querySelector('.productSelect').name = `OrderItems[${index}].ProductId`;
+
+            newProductGroup.querySelector('.quantityInput').name = `OrderItems[${index}].Quantity`;
+
+            newProductGroup.querySelector('.price').name = `OrderItems[${index}].Price`;
+            newProductGroup.querySelector('.disprice').classList.add('d-none');
+            productContainer.appendChild(newProductGroup);
+            Fillter(newProductGroup);
+            calculatePrice(newProductGroup);
+
+        });
+        function calculateTotalPrice() {
+            let totalPrice = 0;
+            let priceInputs = document.querySelectorAll('.price');
+            priceInputs.forEach(function(priceInput) {
+                totalPrice += parseFloat(priceInput.value) || 0;
+            });
+            let totalPriceDisplay = document.querySelector('.TotalPrice');
+            let totalPriceContainer = document.querySelector('.disTotal');
+            totalPriceDisplay.textContent = totalPrice.toFixed(2) + " EGP";
+            document.querySelector('.prices').value = totalPrice.toFixed(2);
+            if (totalPrice > 0) {
+                totalPriceContainer.classList.remove('d-none');
+            } else {
+                totalPriceContainer.classList.add('d-none');
+            }
+        }
+
+      
+
+    </script>
+}

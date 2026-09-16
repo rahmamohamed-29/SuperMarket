@@ -1,0 +1,83 @@
+﻿@model IEnumerable<Category>
+<section>
+<div class="container">
+    <div class="row my-5">
+            <div class="col-6 mt-5">
+                <h1 class=" mb-2 fw-bold text-black ">Categories</h1>
+                <h5 class=" mb-2 fw-bold" style="color: #40545A;">Manage your product categories here</h5>
+                <p class=" fs-5" style="color: #6C757D;">
+                    Categories help you organize your products and make it easier
+                    for your customers to find what they need. You can add, edit, or
+                    remove categories at any time.
+                </p>
+            </div>
+            <div class="col-6">
+                <img src="~/images/ChatGPT Image Sep 6, 2026, 04_52_21 PM.png" class="img-fluid" alt="Categories illustration" />
+            </div>
+    </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+        <div class="row my-5 align-items-center justify-content-between">
+            <form method="get" class="col-4">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control py-3" placeholder="Search Categories..."
+                           name="search" value="@ViewBag.Search">
+                    <button class="btn btn-primary py-3" type="submit"><i class="bi bi-search"></i></button>
+                </div>
+            </form>
+
+            <a asp-controller="Categories" asp-action="Create" class="btn btn-primary fs-6 col-2 fw-bold text-center p-3"> <i class="bi bi-plus-lg fw-bold"></i> Add Category</a>
+    </div>
+</div>
+</section>
+
+<section class="py-5">
+<div class="container">
+    @if(Model.Any()){
+        <table method="get" class="table table-bordered table-hover mb-5">
+             <thead class="table-primary text-white fs-4 fw-bold text-center">
+                <tr>
+                    <th>@Html.DisplayNameFor(c => c.Id)</th>
+                        <th>
+                            <div style="width:60%; text-align:right;float:left">@Html.DisplayNameFor(c => c.Name)  </div>
+                            <div style="width:40%;float:right;text-align:right">
+                                <a asp-controller="Categories" asp-action="Index" asp-route-sortType="Name" asp-route-sortOrder="asc" asp-route-search="@ViewBag.CurrentSearch" class="text-decoration-none text-white">
+                                    <i class="bi bi-arrow-up"></i>
+                                </a>
+                                <a asp-controller="Categories" asp-action="Index" asp-route-sortType="Name" asp-route-sortOrder="desc" asp-route-search="@ViewBag.CurrentSearch" class="text-decoration-none text-white">
+                                    <i class="bi bi-arrow-down"></i>
+                                </a>
+                            </div>
+                        </th>
+                    <th>@Html.DisplayNameFor(c => c.Description)</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody class="text-center text-black fs-5">
+                @foreach (var category in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(c => category.Id)</td>
+                        <td>@Html.DisplayFor(c => category.Name)</td>
+                        <td>@Html.DisplayFor(c => category.Description)</td>
+                        <td>
+                                <a asp-controller="Categories" asp-action="Edit" asp-route-id="@category.Id" class="btn btn-sm btn-outline-primary fw-bold fs-6 me-2"><i class="bi bi-pen"></i> Edit</a>
+                            <a asp-controller="Categories" asp-action="Delete" asp-route-id="@category.Id" class="btn btn-sm btn-outline-secondary fw-bold fs-6"><i class="bi bi-trash"></i> Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+}
+        else
+        {
+            <div class="alert alert-primary text-center fs-5 fw-bold">
+                No categories found.
+            </div>
+        }
+</div>
+</section>
+

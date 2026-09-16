@@ -1,0 +1,99 @@
+﻿@model IEnumerable<Customer>
+<section>
+    <div class="container">
+        <div class="row my-5">
+            <div class="col-6 mt-5 align-items-center justify-content-center">
+                <h1 class=" mb-2 fw-bold text-black mt-5">Customers</h1>
+                <h5 class=" mb-2 fw-bold" style="color: #40545A;">Manage your customers and keep track of their orders</h5>
+                <p class=" fs-5" style="color: #6C757D;">
+                    View and add ,edit, or remove customers from your store. Keep all customer details organized and easily accessible when ever you need them.
+                </p>
+            </div>
+            <div class="col-6">
+                <img src="~/images/ChatGPT Image Sep 9, 2026, 10_24_28 PM.png" class="img-fluid" alt="Customers illustration" />
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="row my-5 align-items-center justify-content-between">
+            <form method="get" class="col-6 d-flex gap-3">
+                <div class="input-group w-50 mb-3">
+                    <input type="text" class="form-control py-3" placeholder="Search Customers..."
+                           name="search" value="@ViewBag.Search">
+                    <button class="btn btn-primary py-3" type="submit"><i class="bi bi-search"></i></button>
+                </div>
+                <div class="input-group w-25 mb-3 ">
+                    <select name="sortBy"
+                            class="form-select w-50"
+                            onchange="this.form.submit()">
+
+                        <option value="" hidden>Sort by</option>
+                        <option value="nameAsc"> Name:A-Z </option>
+                        <option value="nameDesc"> Name:Z-A</option>
+                    </select>
+                </div>
+            </form>
+
+            <a asp-controller="Customers" asp-action="Create" class="btn btn-primary fs-6 col-2 fw-bold text-center p-3"> <i class="bi bi-plus-lg fw-bold"></i> Add Customer</a>
+        </div>
+    </div>
+</section>
+
+
+<section class="py-5">
+    <div class="container">
+        @if (Model.Any())
+        {
+            <div class="row gy-4">
+                @foreach (var customer in Model)
+                {
+
+                
+                    <div class="col-lg-4 col-md-6 col-sm-12 ">
+
+                        <div class="card h-100 p-4" style="box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
+                           <div class="d-flex gap-4 mb-2">
+
+                                <img src="@customer.ImagePath" class="img-fluid rounded-circle w-25" alt="@customer.Name" />
+
+                                <div>
+                                    <h5 class="card-title text-black fw-semibold fs-4 ">@customer.Name</h5>
+                                    <p class="card-text text-dark fs-6"><i class="bi bi-envelope"></i> @customer.Email</p>
+                                    <p class="card-text text-dark fs-6" style="margin-top: -1rem"><i class="bi bi-telephone"></i> @customer.Phone</p>
+                                </div>
+                           </div>
+                            <p class="card-text text-dark fs-6 " ><i class="bi bi-geo-alt"></i> @customer.Address . @customer.City</p>
+                            <p class="card-text text-dark fs-6 "><i class="bi bi-cart"></i> Total Orders: @customer.Orders.Count()</p>
+                            <div class="d-flex justify-content-between  my-3">
+                                <div>
+                                    <a asp-controller="Orders" asp-action="Create" asp-route-id="@customer.Id" class="btn btn-sm btn-primary rounded-3 fw-bold fs-6 me-2"><i class="bi bi-cart-check-fill"></i> Add Order</a>
+                                </div>
+                                <div>
+                                    <a asp-controller="Customers" asp-action="Details" asp-route-id="@customer.Id" class="btn btn-sm btn-outline-primary rounded-3 fw-bold fs-6 me-2" title="Details"><i class="bi bi-eye"></i></a>
+                                    <a asp-controller="Customers" asp-action="Delete" asp-route-id="@customer.Id" class="btn btn-sm btn-outline-secondary fw-bold fs-6" title="Delete"><i class="bi bi-trash"></i> </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+              
+                }
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-primary text-center fs-5 fw-bold">
+                No products found.
+            </div>
+        }
+    </div>
+</section>
+
+
+
+
+
+

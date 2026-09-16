@@ -1,0 +1,91 @@
+﻿@model Product
+<section class="pb-5">
+    <div class="container">
+        <div class="text-center">
+            <h1 class="text-black fw-bold fs-1 mt-5">Edit Product</h1>
+            <p>Update product information.</p>
+        </div>
+        <div class="w-75 mx-auto p-5 " style="box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
+            <h3 class="text-black fw-bold fs-2 mb-4"> <i class="bi bi-plus-circle-fill text-primary fw-bold"></i>Product Information</h3>
+            <form asp-controller="Products" asp-action="EditCurrent" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <input asp-for="ImagePath" type="hidden" />
+                <div class="form-group mb-3">
+                    <label class="form-label" asp-for="ImageFile"></label>
+                    <input type="file" class="form-control" asp-for="ImageFile" accept=".png,.jpg,.jpeg" id="imageFileInput" onchange="addPreviewImage()" />
+                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                </div>
+
+                <img src="@Model.ImagePath" id="ProductImage" style="object-fit:contain;" class="w-50 mx-auto" alt="Product Image" />
+
+                <div class="form-group mb-3">
+                    <label class="form-label text-black fs-4" asp-for="Name"></label>
+                    <input asp-for="Name" class="form-control p-3 text-black fs-5" placeholder="Enter product name..." />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="form-label text-black fs-4" asp-for="Description"></label>
+                    <textarea asp-for="Description" class="form-control p-3 text-black fs-5" rows="3" placeholder="Enter product description..."></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="form-label text-black fs-4" asp-for="Price"></label>
+                    <input asp-for="Price" type="number" class="form-control p-3 text-black fs-5" placeholder="Enter product price..." />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="form-label text-black fs-4" asp-for="AvailableStock"></label>
+                    <input asp-for="AvailableStock" type="number" class="form-control p-3 text-black fs-5" placeholder="Enter available stock..." />
+                    <span asp-validation-for="AvailableStock" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <select class="form-control p-3 text-black fs-5" asp-for="StockStatus">
+                        <option value="" hidden class="text-black-50">Select stock level</option>
+                        <option value="In Stock">In Stock</option>
+                        <option value="Out of Stock">Out of Stock</option>
+                        <option value="Low Stock">Low Stock</option> 
+                    </select>
+                    <span asp-validation-for="StockStatus" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="form-label text-black fs-4" asp-for="productId"></label>
+                    <input asp-for="productId" class="form-control p-3 text-black fs-5" placeholder="Enter product ID..." />
+                    <span asp-validation-for="productId" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="form-label text-black fs-4" asp-for="CategoryId"></label>
+                    
+                        <select asp-for="CategoryId"
+                                asp-items="ViewBag.AllCategories"
+                                class="form-control p-3 text-black fs-4">
+                        <option value="" hidden class="text-black-50">Select a category</option>
+
+                        </select>
+                 
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary fw-bold fs-5 px-3 me-4">Edit</button>
+                <a asp-controller="Categories" asp-action="Index" class="btn btn-secondary fw-bold fs-5 px-3">Cancel</a>
+            </form>
+            
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        let productImage = document.getElementById('ProductImage');
+        let imageFileInput = document.getElementById('imageFileInput');
+        if (!productImage.getAttribute('src')) {
+            productImage.style.display = 'none';
+        }
+ 
+        function addPreviewImage() {
+            productImage.style.display = 'block';
+            productImage.src =
+                window.URL.createObjectURL(imageFileInput.files[0]);
+        }
+    </script>
+}
+

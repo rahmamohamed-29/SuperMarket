@@ -1,0 +1,41 @@
+﻿@model SmartMart.ViewModel.DetailsCustomer
+
+<section class="pb-5">
+    <div class="container">
+       
+        <div class="w-75 mx-auto p-5 " style="box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
+            <div class="row justify-content-center text-center">
+                <div class="text-white rounded-circle d-flex justify-content-center align-items-center bg-secondary mb-3" style="width: 100px; height: 100px; "><i class="bi bi-trash fs-1"></i></div>
+                <h3 class="text-black fw-bold fs-2 mb-4"> Are you sure?</h3>
+                <p>You are about to delete @Model.Customer.Name and all of their orders</p>
+            </div>
+            <div class=" row p-5 justify-content-center my-5" style="box-shadow: #FDEAEB 0px 4px 12px;">
+                <div class="col-6"> <img src="@Model.Customer.ImagePath" id="CustomerImage" style="object-fit:contain;" class=" mx-auto rounded-circle" alt="Customer Image" /></div>
+                 <div class="col-6">
+
+                    <h4 class="text-black fw-bold fs-2">@Model.Customer.Name</h4>
+                    <p><i class="bi bi-envelope"></i> @Model.Customer.Email</p>
+                    <p><i class="bi bi-telephone"></i> @Model.Customer.Phone</p>
+                    <p><i class="bi bi-geo-alt"></i> @Model.Customer.City</p>
+                    <p><i class="bi bi-house-door"></i> @Model.Customer.Address</p>
+                    <div>
+                        <p class="text-primary fw-semibold mb-1">Number of Orders</p>
+                        <p class="text-primary fw-bold fs-2 mb-0"> @Model.Orders.Count </p>
+                    </div>
+                 </div>
+                
+            </div>
+            <div class="row justify-content-center">
+
+                <form asp-controller="Customers" asp-action="DeleteCurrent" method="post">
+                    <input type="hidden" name="id" value="@Model.Customer.Id" />
+                    <button type="submit" class="btn btn-secondary fw-bold fs-5 px-3">Delete</button>
+                    <a asp-controller="Customers" asp-action="Index" class="btn btn-light  fw-bold fs-5 px-3">Cancel</a>
+                </form>
+               
+            </div>
+           
+           
+        </div>
+    </div>
+</section>

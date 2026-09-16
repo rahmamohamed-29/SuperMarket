@@ -1,0 +1,133 @@
+﻿@model SmartMart.ViewModel.HomeData
+<header class="w-100 mt-0" style="
+
+    background-image: url('images/chatgpt image sep 16, 2026, 02_58_00 am.png'); background-size:100% 100%">
+    <div class="p-5 ">
+        <div class="px-5">
+            <h1 class="display-3 fw-bolder px-5" style="color:#072319;"> Welcome to<br /> <span class="text-primary">SmartMart</span></h1>
+
+            <p class="fw-bold fs-6 px-5" style="width:35%;color:#072319;">
+                Your supermarket, smarter and easier to manage.
+                SmartMart helps you manage products, customers, orders, and categories from one simple dashboard.
+            </p>
+            <div class="d-flex gap-3 fw-bold px-5" style="color:#072319;">
+                <p><i class="bi bi-check-circle-fill text-primary"></i> Manage your store.</p>
+                <p><i class="bi bi-check-circle-fill text-primary"></i> Stay organized.</p>
+                <p><i class="bi bi-check-circle-fill text-primary"></i> Save time</p>
+            </div>
+        </div>
+    </div>
+    </div>
+</header>
+<section class="p-5">
+     <div class="row px-5">
+
+            <div class="col-2 rounded-circle d-flex justify-content-center align-items-center mb-3" style="width: 60px; height: 60px;color:#16694c;background-color:#E9F7F1;"><i class="bi bi-bar-chart-fill fs-2"></i></div>
+
+        <div class="col-8">
+            <h4 class="fs-3 fw-bold" style="color:#072319;">Your Store at a Glance</h4>
+            <p class="fw-semibold" style="color:#16694c;">Get a quick overview of your supermarket and keep track of everything that matters</p>
+        </div>
+     </div>
+
+     <div class="row px-5 pt-5 justify-content-around">
+        <div class="col-lg-3 col-md-6 col-sm-12" >
+            <div class="p-4 row h-100 shadow-sm" style="background-color:rgb(239, 250, 243,.5);">
+                <div class="col">
+                    <div class="rounded-circle d-flex justify-content-center align-items-center mb-3 text-white" style="width: 50px; height: 50px;background-color:#16694c;"><i class="bi bi-tag-fill fs-3"></i></div>
+                <div>
+                    <h4 class="fw-bold" style="color:#16694c;">Categories</h4>
+                    <p class="fw-bold fs-1" style="color:#16694c;">@Model.countCategory </p>
+                    <p class="fw-semibold" style="color:#16694c;">Active product categories</p>
+                </div>
+                </div>
+                <div class="col-auto d-flex justify-content-center align-items-center"> <a asp-controller="Categories" asp-action="Index" class="text-decoration-none" style="color:#16694c;" title="Add Category"><i class="bi bi-arrow-right fw-bold fs-3"></i></a></div>
+            </div>
+         </div>  
+        <div class="col-lg-3 col-md-6 col-sm-12" >
+            <div class="p-4 row h-100 shadow-sm" style="background-color:rgb(239, 250, 243,.5);">
+                <div class="col">
+                    <div class="rounded-circle d-flex justify-content-center align-items-center mb-3 text-white" style="width: 50px; height: 50px;background-color:#16694c;"><i class="bi bi-people-fill fs-3"></i></div>
+                <div>
+                    <h4 class="fw-bold" style="color:#16694c;">Products</h4>
+                    <p class="fw-bold fs-1" style="color:#16694c;">@Model.countProducts</p>
+                    <p class="fw-semibold" style="color:#16694c;">Total products in your store</p>
+                </div>
+                </div>
+                <div class="col-auto d-flex justify-content-center align-items-center"> <a asp-controller="Products" asp-action="Index" class="text-decoration-none" style="color:#16694c;" title="Add Category"><i class="bi bi-arrow-right fw-bold fs-3"></i></a></div>
+            </div>
+           </div> 
+        <div class="col-lg-3 col-md-6 col-sm-12" >
+            <div class="p-4 row h-100 shadow-sm" style="background-color:rgb(239, 250, 243,.5);">
+                <div class="col">
+                    <div class="rounded-circle d-flex justify-content-center align-items-center mb-3 text-white" style="width: 50px; height: 50px;background-color:#16694c;"><i class="bi bi-box-fill fs-3"></i></div>
+                <div>
+                    <h4 class="fw-bold" style="color:#16694c;">Customers</h4>
+                    <p class="fw-bold fs-1" style="color:#16694c;">@Model.countCustomers</p>
+                    <p class="fw-semibold" style="color:#16694c;">Registered customers</p>
+                </div>
+                </div>
+                <div class="col-auto d-flex justify-content-center align-items-center"> <a asp-controller="Customers" asp-action="Index" class="text-decoration-none" style="color:#16694c;" title="Add Category"><i class="bi bi-arrow-right fw-bold fs-3"></i></a></div>
+            </div>
+        </div> 
+        
+        </div>
+</section>
+
+
+
+
+<section class="p-5">
+     <div class="row px-5">
+
+            <div class="col-2 rounded-circle d-flex justify-content-center align-items-center mb-3" style="width: 60px; height: 60px;color:#16694c;background-color:#E9F7F1;"><i class="bi bi-lightning-fill fs-2"></i></div>
+
+        <div class="col-8">
+            <h4 class="fs-3 fw-bold" style="color:#072319;">What would you like to do?</h4>
+            <p class="fw-semibold" style="color:#16694c;">Quickly manage your supermarket from one place .</p>
+        </div>
+     </div>
+
+
+
+     <div class="p-5 row g-5">
+
+        <div class="col-lg-4 col-md-6 col-sm-12" >
+            <div class="p-4 row h-100" style="box-shadow: rgb(22, 105, 76 ,.2) 0px 4px 12px;">
+                <div class="col-auto rounded-circle d-flex justify-content-center align-items-center mb-3 text-white" style="width: 50px; height: 50px;background-color:#16694c;"><i class="bi bi-tag-fill fs-3"></i></div>
+                <div class="col">
+                    <h4 class="fw-bold" style="color:#16694c;">Add Category</h4>
+                    <p class="fw-semibold" style="color:#16694c;">Create and manage product categories for your store</p>
+                </div>
+                <div class="col-auto d-flex justify-content-end align-items-end"> <a asp-controller="Categories" asp-action="Create" class="text-decoration-none" style="color:#16694c;" title="Add Category"><i class="bi bi-arrow-right fw-bold fs-3"></i></a></div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-sm-12">
+            <div class="p-4 row h-100" style="box-shadow: rgb(22, 105, 76 ,.2) 0px 4px 12px;">
+                <div class="col-auto rounded-circle d-flex justify-content-center align-items-center mb-3 text-white" style="width: 60px; height: 60px;background-color:#16694c;"><i class="bi bi-box-fill fs-3"></i></div>
+                <div class="col">
+                    <h4 class="fw-bold" style="color:#16694c;">Add Product</h4>
+                    <p class="fw-semibold" style="color:#16694c;">Add new products and keep your inventory organized</p>
+                </div>
+                <div class="col-auto d-flex justify-content-end align-items-end"> <a asp-controller="Products" asp-action="Create" class="text-decoration-none" style="color:#16694c;" title="Add Product"><i class="bi bi-arrow-right fw-bold fs-3"></i></a></div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-12" >
+            <div class="p-4 row h-100" style="box-shadow: rgb(22, 105, 76 ,.2) 0px 4px 12px;">
+                <div class="col-auto rounded-circle d-flex justify-content-center align-items-center mb-3 text-white" style="width: 60px; height: 60px;background-color:#16694c;"><i class="bi bi-people-fill fs-3"></i></div>
+                <div class="col">
+                    <h4 class="fw-bold" style="color:#16694c;">Add Cusromer </h4>
+                    <p class="fw-semibold" style="color:#16694c;">Register and manage your customers easily</p>
+                </div>
+                <div class="col-auto d-flex justify-content-end align-items-end"><a asp-controller="Customers" asp-action="Create" class="text-decoration-none" style="color:#16694c;" title="Add Customers"> <i class="bi bi-arrow-right fw-bold fs-2"></i></a></div>
+            </div>
+        </div>
+       
+     
+     </div>
+
+
+           
+
+</section>

@@ -1,0 +1,36 @@
+﻿@model Product
+<section class="pb-5">
+    <div class="container">
+        <div class="text-center">
+            <h1 class="text-black fw-bold fs-1 mt-5">Delete Product</h1>
+            <p>Please confirm that you want to delete this product.</p>
+        </div>
+        <div class="w-75 mx-auto p-5 " style="box-shadow: gba(0, 0, 0, 0.1) 0px 4px 12px;">
+            <div class="row justify-content-center text-center">
+                <div class="text-white rounded-circle d-flex justify-content-center align-items-center bg-secondary mb-3" style="width: 100px; height: 100px; "><i class="bi bi-trash fs-1"></i></div>
+                <h3 class="text-black fw-bold fs-2 mb-4"> Are you sure?</h3>
+                <p>You are about to delete "@Model.Name".</p>
+            </div>
+            <div class="alert alert-secondary row">
+                <dl class="col-6 mt-5">
+                    <dt class="fw-bold text-black">Name</dt>
+                    <dd class="fs-4 text-dark">@Model.Name</dd>
+                    <dt class="fw-bold text-black">Description</dt>
+                    <dd class="fs-4 text-dark">@Model.Description</dd>
+                    <dt class="fw-bold text-black">Price</dt>
+                    <dd class="fs-4 text-dark">@Model.Price.ToString("0.00") EGP</dd>
+                    <dt class="fw-bold text-black">Category</dt>
+                    <dd class="fs-4 text-dark">@Model.Category.Name</dd>
+                </dl>
+                <img src="@Model.ImagePath" id="ProductImage" style="object-fit:contain;" class="w-50 mx-auto col-6 rounded-5" alt="Product Image" />
+            </div>
+            <div class="row justify-content-center">
+                <form asp-controller="Products" asp-action="DeleteCurrent" method="post">
+                    <input type="hidden" asp-for="Id" />
+                    <button type="submit" class="btn btn-secondary fw-bold fs-5 px-3">Delete</button>
+                    <a asp-controller="Products" asp-action="Index" class="btn btn-light  fw-bold fs-5 px-3">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,141 @@
+﻿@model IEnumerable<Product>
+<section>
+    <div class="container">
+        <div class="row my-5">
+            <div class="col-6 mt-5">
+                <h1 class=" mb-2 pt-5 fw-bold text-black ">Products</h1>
+                <h5 class=" mb-2 fw-bold" style="color: #40545A;">Manage your product inventory here</h5>
+                <p class=" fs-5" style="color: #6C757D;">
+                    Keep all your supermarket products organized in one place.
+                    You can add new products, update their details, manage prices,
+                    and keep track of your stock easily.
+                </p>
+            </div>
+            <div class="col-6">
+                <img src="~/images/WhatsApp Image 2026-09-07 at 9.43.36 PM.jpeg" class="img-fluid" alt="Products illustration" />
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="row my-5 align-items-center justify-content-between">
+            <form method="get" class="col-8 d-flex gap-3 ">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control py-3" placeholder="Search Products..."
+                           name="search" value="@ViewBag.Search">
+                    <button class="btn btn-primary py-3" type="submit"><i class="bi bi-search"></i></button>
+                </div>
+                <div class="input-group w-50 mb-3 ">
+                    <select name="category"
+                            class="form-select w-50"
+                            onchange="this.form.submit()">
+
+                        <option  value="" hidden >Categories</option>
+
+                        @foreach (var category in ViewBag.Categories)
+                        {
+                            <option value="@category.Name">
+                                @category.Name
+                            </option>
+                        }
+
+                    </select>
+                </div>
+                <div class="input-group w-50 mb-3 ">
+                    <select name="sortBy"
+                            class="form-select w-50"
+                            onchange="this.form.submit()">
+
+                        <option value="" hidden>Sort by</option>
+                        <option value="nameAsc"> Name:A-Z </option>
+                        <option value="nameDesc"> Name:Z-A</option>
+                        <option value="priceAsc"> Price: Low to High</option>
+                        <option value="priceDesc"> Price: High to Low</option>
+                        <option value="stockAsc"> Stock: Low to High</option>
+                        <option value="stockDesc"> Stock: High to Low</option>
+                    </select>
+                </div>
+            </form>
+             
+            <a asp-controller="Products" asp-action="Create" class="btn btn-primary  fs-6 col-2 fw-bold text-center p-3"> <i class="bi bi-plus-lg fw-bold"></i> Add Product</a>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        @if (Model.Any())
+        {
+            <div class="row gy-4">
+                @foreach (var product in Model)
+                {
+
+                
+                    <div class="col-lg-4 col-md-6 col-sm-12 ">
+
+                        <div class="card h-100 p-4" style="box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
+                            <img src="@product.ImagePath" class="img-fluid rounded-3 h-100 w-75 mx-auto" alt="@product.Name" />
+                            <h5 class="card-title text-black fw-bold fs-3 ">@product.Name</h5>
+                            <p class="categoryName rounded-3 text-white px-2 py-1 fw-bold fs-4 " style="display: inline-block !important; width: fit-content !important;">
+                                @product.Category.Name
+                            </p>
+                            <p class="card-text text-black fs-4">@product.Price.ToString("0.00") EGP</p>
+                            <div class="d-flex justify-content-between  ">
+                                <div>
+                                    <p class="rounded-3 text-white p-2 text-center fs-6 fw-bold bg-secondary " style="display: inline-block !important; width: fit-content !important;">@product.StockStatus</p>
+                                </div>
+                                <div>
+                                    <a asp-controller="Products" asp-action="Details" asp-route-id="@product.Id" class="btn btn-sm btn-outline-primary rounded-3 fw-bold fs-6 me-2" title="Details"><i class="bi bi-eye"></i></a>
+                                    <a asp-controller="Products" asp-action="Edit" asp-route-id="@product.Id" class="btn btn-sm btn-outline-info rounded-3 fw-bold fs-6 me-2" title="Edit"><i class="bi bi-pen"></i></a>
+                                    <a asp-controller="Products" asp-action="Delete" asp-route-id="@product.Id" class="btn btn-sm btn-outline-secondary rounded-3 fw-bold fs-6" title="Delete"><i class="bi bi-trash"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+              
+                }
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-primary text-center fs-5 fw-bold">
+                No products found.
+            </div>
+        }
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        let CategoryNames = document.querySelectorAll('.categoryName');
+        CategoryNames.forEach(function(CategoryName) {
+            let categoryText = CategoryName.textContent.trim();
+            switch (categoryText) {
+                case 'Fruits & Vegetables':
+                    CategoryName.style.backgroundColor = 'rgba(76, 175, 80, 0.5)';
+                    break;
+                case 'Dairy & Eggs':
+                    CategoryName.style.backgroundColor = 'rgba(64, 172, 160, 0.5)';
+                    break;
+                case 'Meat & Poultry':
+                    CategoryName.style.backgroundColor = 'rgba(239, 149, 153, 0.5)';
+                    break;
+                case 'Bakery':
+                    CategoryName.style.backgroundColor = 'rgba(255, 193, 102, 0.5)';
+                    break;
+                case 'Snacks':
+                    CategoryName.style.backgroundColor = 'rgba(153, 102, 255, 0.5)';
+                    break;
+                case 'Frozen Foods':
+                    CategoryName.style.backgroundColor = 'rgba(92, 160, 220, 0.5)';
+                    break;
+                default:
+                    CategoryName.style.backgroundColor = 'rgba(201, 203, 207, 0.5)';
+            }
+        });
+
+    </script>
+}

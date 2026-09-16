@@ -1,0 +1,236 @@
+﻿@model SmartMart.ViewModel.CreateNewCustomers
+<section class="pb-5">
+    <div class="container">
+        <div class="text-center">
+            <h1 class="text-black fw-bold fs-1 mt-5">Add New Customer</h1>
+            <p>Create a new customer for your store.</p>
+        </div>
+        <div class="w-75 mx-auto p-5 " style="box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
+
+            <form asp-controller="Customers" asp-action="AddNew" method="post" enctype="multipart/form-data" >
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <h3 class="text-black fw-bold fs-2 mb-4"> <i class="bi bi-plus-circle-fill text-primary fw-bold"></i>  Customer Information</h3>
+                <div class="form-group mb-3">
+                    <label class="form-label" asp-for="Customer.ImageFile"></label>
+                    <input type="file" class="form-control" asp-for="Customer.ImageFile" accept=".png,.jpg,.jpeg" id="imageFileInput" onchange="addPreviewImage()" />
+                    <span asp-validation-for="Customer.ImageFile" class="text-danger"></span>
+                </div>
+
+                <img src="" id="CustomerImage" style="object-fit:contain;" class="w-50 mx-auto" alt="Customer Image" />
+
+                <div class="form-group mb-3">
+                    <label class="form-label text-black fs-4" asp-for="Customer.Name"></label>
+                    <input asp-for="Customer.Name" class="form-control p-3 text-black fs-5" placeholder="Enter customer name..." />
+                    <span asp-validation-for="Customer.Name" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="form-label text-black fs-4" asp-for="Customer.Email"></label>
+                    <input asp-for="Customer.Email" class="form-control p-3 text-black fs-5"  placeholder="Enter customer email..."></input>
+                    <span asp-validation-for="Customer.Email" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="form-label text-black fs-4" asp-for="Customer.Phone"></label>
+                    <input asp-for="Customer.Phone" class="form-control p-3 text-black fs-5" placeholder="Enter customer phone..." />
+                    <span asp-validation-for="Customer.Phone" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="form-label text-black fs-4" asp-for="Customer.City"></label>
+                    <input asp-for="Customer.City" class="form-control p-3 text-black fs-5" placeholder="Enter customer city..." />
+                    <span asp-validation-for="Customer.City" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="form-label text-black fs-4" asp-for="Customer.Address"></label>
+                    <input asp-for="Customer.Address" class="form-control p-3 text-black fs-5" placeholder="Enter customer address..." />
+                    <span asp-validation-for="Customer.Address" class="text-danger"></span>
+                </div>
+                <h4 class="text-black fw-bold fs-2 mb-4"> <i class="bi bi-plus-circle-fill text-primary fw-bold"></i>  Order Information</h4>
+                <div class="form-group mb-3">
+                    <label class="form-label text-black fs-4" asp-for="Order.OrderDate"></label>
+                    <input asp-for="Order.OrderDate" class="form-control p-3 text-black fs-5" placeholder="Enter order date..." />
+                    <span asp-validation-for="Order.OrderDate" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <select class="form-control p-3 text-black fs-5" asp-for="Order.Status">
+                        <option value="" hidden class="text-black-50">Select status</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                    <span asp-validation-for="Order.Status" class="text-danger"></span>
+                </div>
+
+                <div id="productContainer">
+                    <div class="productFields">
+                        <div class="form-group mb-3">
+                            <label class="form-label text-black fs-4">Category </label>
+                            <select class="form-control p-3 text-black fs-4 categorySelect" >
+                                <option value="" hidden class="text-black-50">Select a category</option>
+                                @foreach (var category in ViewBag.Categories)
+                                {
+                                    <option value="@category.Id">@category.Name</option>
+                                }
+                            </select>
+                        </div>
+
+                       <div class="row">
+                            <div class="form-group mb-3 col-6">
+                                <label class="form-label text-black fs-4">Product </label>
+
+                                <select class="form-control p-3 text-black fs-4 productSelect" name="OrderItem[0].ProductId">
+                                    <option value="" hidden class="text-black-50">Select a product</option>
+                                    @foreach (var product in ViewBag.Products)
+                                    {
+                                        <option value="@product.Id" data-category="@product.CategoryId" data-price="@product.Price">
+                                            @product.Name
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group mb-3 col-6">
+                                <label class="form-label text-black fs-4">Quantity</label>
+                                <input type="number" class="form-control p-3 text-black fs-5 quantityInput" asp-for="OrderItem[0].Quantity" min="1" value="1" />
+                            </div>
+                       </div>
+                        <div class="form-group mb-3 disprice d-none">
+                            <label class="form-label text-black fs-4">Price</label>
+                            <p class="form-control p-3 text-black fs-5 PriceItem" >0.00 EGP</p>
+                            <input type="hidden" class="price" asp-for="OrderItem[0].Price" />
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-secondary fw-bold fs-5 px-3 py-2 my-3" id="addProductBtn"><i class="bi bi-basket-fill"></i> Add another product</button>
+                </div>
+                <div class="form-group mb-3 disTotal d-none">
+                    <label class="form-label text-black fs-4" asp-for="Order.TotalPrice"></label>
+                    <p class="form-control p-3 text-black fs-5 TotalPrice" ></p>
+                    <input type="hidden" class="prices" asp-for="Order.TotalPrice" />
+                </div>
+                <button type="submit" class="btn btn-primary fw-bold fs-5 px-3">Create</button>
+            </form>
+
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        let customerImage = document.getElementById('CustomerImage');
+        let imageFileInput = document.getElementById('imageFileInput');
+        if (!customerImage.getAttribute('src')) {
+            customerImage.style.display = 'none';
+        }
+
+        function addPreviewImage() {
+            customerImage.style.display = 'block';
+            customerImage.src =
+                window.URL.createObjectURL(imageFileInput.files[0]);
+        }
+         
+        let productField = document.querySelector('.productFields');
+
+        function Fillter(productField){
+
+            let categorySelect = productField.querySelector('.categorySelect');
+            let productSelect = productField.querySelector('.productSelect');
+            categorySelect.addEventListener('change', function() {
+                let selectedCategory = categorySelect.value;
+                let products = productSelect.querySelectorAll("option");
+                products.forEach(function(product) {
+                    if (product.value === "") {
+                        return;
+                    }
+                    if (product.dataset.category === selectedCategory) {
+                        product.hidden = false;
+                    }
+                    else {
+                        product.hidden = true;
+                    }
+                });
+
+                productSelect.value = "";
+            });
+        }
+
+        function calculatePrice(productField) {
+            let selectedProduct = productField.querySelector('.productSelect');
+            let quantityInput = productField.querySelector('.quantityInput');
+            let displayPrice = productField.querySelector('.disprice');
+            let priceDisplay = productField.querySelector('.PriceItem');
+            let priceInput = productField.querySelector('.price');
+            function updatePrice() {
+                let selectedOption = selectedProduct.options[selectedProduct.selectedIndex];
+                if (selectedOption && selectedOption.dataset.price && quantityInput.value) {
+                    let priceOne = parseFloat(selectedOption.dataset.price);
+                    let quantityValue = parseInt(quantityInput.value);
+                    let totalPrice = priceOne * quantityValue;
+                    priceDisplay.textContent = totalPrice.toFixed(2) + " EGP";
+                    priceInput.value = totalPrice.toFixed(2);
+                    displayPrice.classList.remove('d-none');
+                } else {
+                    priceDisplay.textContent = "0.00 EGP";
+                    priceInput.value = "0.00";
+                    displayPrice.classList.add('d-none');
+                }
+                calculateTotalPrice();
+            }
+            selectedProduct.addEventListener('change', updatePrice);
+            quantityInput.addEventListener('input', updatePrice);
+        }
+
+        Fillter(productField);
+        calculatePrice(productField);
+       
+
+        let addBtn = document.getElementById('addProductBtn');
+        let productContainer = document.getElementById('productContainer');
+         addBtn.addEventListener('click', function() {
+            let productFields = document.querySelectorAll('.productFields');
+            let lastProduct = productFields[productFields.length - 1];
+            let selectedProduct = lastProduct.querySelector('.productSelect').value;
+            let quantity = lastProduct.querySelector('.quantityInput').value;
+            if (!selectedProduct || !quantity) {
+                alert("Please select a product and enter a quantity.");
+                return;
+            }
+            let newProductGroup = lastProduct.cloneNode(true);
+
+            newProductGroup.querySelector('.categorySelect').value = "";
+            newProductGroup.querySelector('.productSelect').value = "";
+            newProductGroup.querySelector('.price').value = "";
+            newProductGroup.querySelector('.PriceItem').textContent = "";
+            newProductGroup.querySelector('.quantityInput').value = 1;
+
+            let index = document.querySelectorAll('.productFields').length;
+             newProductGroup.querySelector('.productSelect').name = `OrderItem[${index}].ProductId`;
+
+            newProductGroup.querySelector('.quantityInput').name = `OrderItem[${index}].Quantity`;
+
+            newProductGroup.querySelector('.price').name = `OrderItem[${index}].Price`;
+            newProductGroup.querySelector('.disprice').classList.add('d-none');
+            productContainer.appendChild(newProductGroup);
+            Fillter(newProductGroup);
+            calculatePrice(newProductGroup);
+
+        });
+       function calculateTotalPrice() {
+            let totalPrice = 0;
+            let priceInputs = document.querySelectorAll('.price');
+            priceInputs.forEach(function(priceInput) {
+                totalPrice += parseFloat(priceInput.value) || 0;
+            });
+            let totalPriceDisplay = document.querySelector('.TotalPrice');
+            let totalPriceContainer = document.querySelector('.disTotal');
+            totalPriceDisplay.textContent = totalPrice.toFixed(2) + " EGP";
+            document.querySelector('.prices').value = totalPrice.toFixed(2);
+            if (totalPrice > 0) {
+                totalPriceContainer.classList.remove('d-none');
+            } else {
+                totalPriceContainer.classList.add('d-none');
+            }
+        }
+      
+
+       
+    </script>
+}
