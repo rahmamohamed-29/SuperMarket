@@ -12,7 +12,7 @@ namespace SmartMart.Controllers
     {
        private readonly AppDbContext context;
 
-public ProductsController(AppDbContext context)
+public CustomersController(AppDbContext context)
 {
     this.context = context;
 }
