@@ -14,7 +14,7 @@ namespace SmartMart.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("Server=db68822.public.databaseasp.net; Database=db68822; User Id=db68822; Password=8Ke+N-2o6r?R; Encrypt=True; TrustServerCertificate=True; MultipleActiveResultSets=True;");
+            
         }
         override protected void OnModelCreating(ModelBuilder modelBuilder)
         {
