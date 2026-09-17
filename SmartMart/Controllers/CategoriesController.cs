@@ -9,7 +9,7 @@ namespace SmartMart.Controllers
     {
        private readonly AppDbContext context;
 
-public ProductsController(AppDbContext context)
+public CategoriesController(AppDbContext context)
 {
     this.context = context;
 }
