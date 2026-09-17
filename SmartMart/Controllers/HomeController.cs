@@ -9,7 +9,12 @@ namespace SmartMart.Controllers
 {
     public class HomeController : Controller
     {
-        AppDbContext context = new AppDbContext();
+        private readonly AppDbContext context;
+
+public HomeController(AppDbContext context)
+{
+    this.context = context;
+}
         public IActionResult Index()
         {
             HomeData Data = new HomeData
