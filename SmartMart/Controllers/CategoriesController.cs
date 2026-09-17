@@ -7,7 +7,12 @@ namespace SmartMart.Controllers
 {
     public class CategoriesController : Controller
     {
-        AppDbContext context = new AppDbContext();
+       private readonly AppDbContext context;
+
+public ProductsController(AppDbContext context)
+{
+    this.context = context;
+}
         public IActionResult Index(string? search, string? sortType, string? sortOrder)
         {
             IQueryable<Category> categories = context.Categories;
