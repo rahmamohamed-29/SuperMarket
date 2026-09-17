@@ -9,7 +9,12 @@ namespace SmartMart.Controllers
 {
     public class OrdersController : Controller
     {
-        AppDbContext context = new AppDbContext();
+              private readonly AppDbContext context;
+
+public OrdersController(AppDbContext context)
+{
+    this.context = context;
+}
         public IActionResult Create(int id)
         {
 
