@@ -8,7 +8,12 @@ namespace SmartMart.Controllers
 {
     public class ProductsController : Controller
     {
-        AppDbContext context = new AppDbContext();
+                    private readonly AppDbContext context;
+
+public ProductsController(AppDbContext context)
+{
+    this.context = context;
+}
         IWebHostEnvironment webHostEnvironment;
         public ProductsController(IWebHostEnvironment webHost)
         {
