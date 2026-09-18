@@ -11,16 +11,14 @@ namespace SmartMart.Controllers
     public class CustomersController : Controller
     {
        private readonly AppDbContext context;
-
-public CustomersController(AppDbContext context)
+ IWebHostEnvironment webHostEnvironment;
+public CustomersController(AppDbContext context , IWebHostEnvironment webHost)
 {
     this.context = context;
+    webHostEnvironment = webHost;
 }
-        IWebHostEnvironment webHostEnvironment;
-        public CustomersController(IWebHostEnvironment webHost)
-        {
-            webHostEnvironment = webHost;
-        }
+       
+       
         public IActionResult Index(string? search, string? sortBy)
         {
             IQueryable<Customer> customers = context.Customers.Include(c => c.Orders);
