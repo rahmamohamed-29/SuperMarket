@@ -10,13 +10,11 @@ namespace SmartMart.Controllers
     {
                     private readonly AppDbContext context;
 
-public ProductsController(AppDbContext context)
-{
-    this.context = context;
-}
+
         IWebHostEnvironment webHostEnvironment;
-        public ProductsController(IWebHostEnvironment webHost)
+        public ProductsController(AppDbContext context,IWebHostEnvironment webHost)
         {
+        this.context = context;
             webHostEnvironment = webHost;
         }
         public IActionResult Index(string? search, string? sortBy, string? category)
